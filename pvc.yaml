@@ -7,6 +7,6 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: "30Gi"
+      storage: "10Gi"
   volumeName: 
   storageClassName: clique-testnet-nfs
