@@ -23,7 +23,7 @@ spec:
         volumeMounts:
         - name: clique-testnet-disk
           mountPath: /block-data
-      restartPolicy: OnFailure
+      restartPolicy: Always
       volumes:
        - name: clique-testnet-disk
          persistentVolumeClaim:
