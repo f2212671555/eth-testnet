@@ -13,7 +13,6 @@ spec:
         rpc: clique-testnet-rpc
     spec:
       containers:
-      restartPolicy: OnFailure
       - name: clique-testnet
         image: f221267155/clique-testnet
         imagePullPolicy: IfNotPresent
@@ -24,6 +23,7 @@ spec:
         volumeMounts:
         - name: clique-testnet-disk
           mountPath: /block-data
+      restartPolicy: OnFailure
       volumes:
        - name: clique-testnet-disk
          persistentVolumeClaim:
