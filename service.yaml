@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clique-testnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      rpc: clique-testnet-rpc
+  template:
+    metadata:
+      labels:
+        rpc: clique-testnet-rpc
+    spec:
+      containers:
+      - name: clique-testnet
+        image: f221267155/clique-testnet
+        imagePullPolicy: IfNotPresent
+        restartPolicy: OnFailure
+        ports:
+        - containerPort: 8545
+          name: clique-testnet
+          protocol: TCP
+        volumeMounts:
+        - name: clique-testnet-disk
+          mountPath: /block-data
+      volumes:
+       - name: clique-testnet-disk
+         persistentVolumeClaim:
+           claimName: clique-testnet-disk 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    rpc: clique-testnet
+  name: clique-testnet
+spec:
+  type: NodePort
+  ports:
+  - name: clique-testnet
+    port: 8545
+    targetPort: 8545
+    nodePort: 30087
+    protocol: TCP
+  selector:
+    rpc: clique-testnet
