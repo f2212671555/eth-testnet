@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: clique-testnet
-        image: f221267155/clique-testnet
+        image: f221267155/clique-testnet:v2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8545
@@ -22,7 +22,7 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: clique-testnet-disk
-          mountPath: /block-data
+          mountPath: /server/data
       restartPolicy: Always
       volumes:
        - name: clique-testnet-disk
