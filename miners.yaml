@@ -127,10 +127,10 @@ spec:
           --http.api 'admin,eth,net,web3,personal,miner,clique' 
           --nousb --allow-insecure-unlock
         imagePullPolicy: Never
-#         ports:
-#         - containerPort: 8545
-#           name: clique-testnet
-#           protocol: TCP
+        ports:
+        - containerPort: 8545
+          name: clique-testnet
+          protocol: TCP
 #         volumeMounts:
 #         - name: clique-testnet-disk
 #           mountPath: /miner3/data
