@@ -36,7 +36,7 @@ spec:
       #   volumeMounts:
       #   - name: clique-testnet-disk
       #     mountPath: /genesis/data/geth
-      # restartPolicy: Always
+      restartPolicy: Always
       # volumes:
       #  - name: clique-testnet-disk
       #    persistentVolumeClaim:
