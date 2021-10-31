@@ -7,18 +7,23 @@ FROM ubuntu:latest
     && apt-get install -y golang-go
 RUN git clone https://github.com/ethereum/go-ethereum
 WORKDIR /go-ethereum
-RUN make geth 
+RUN make geth
 RUN ln -sf /go-ethereum/build/bin/geth /bin/geth
+RUN add-apt-repository -y ppa:ethereum/ethereum
+RUN apt-get install bootnode 
 
 WORKDIR /
 # House the data here
-COPY genesis .
+COPY bootnode bootnode
+COPY miner1 miner1
+COPY miner2 miner2
+COPY miner3 miner3
 # Pass in the genesis block.
-COPY clique_genesis.json genesis.json
+COPY genesis.json genesis.json
 
 # port -> 3000
 # network -> 49021
 # init and start node
 EXPOSE 22 8088 50070 8545
 # https://geth.ethereum.org/docs/interface/command-line-options
-ENTRYPOINT geth --datadir /genesis/data init /genesis.json; geth --port 3000 --networkid 49021 --nodiscover --datadir=/genesis/data --maxpeers=0  --http  --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api "eth,net,web3,personal,miner" --nousb --allow-insecure-unlock
+# ENTRYPOINT geth --datadir /node/data init /genesis.json;

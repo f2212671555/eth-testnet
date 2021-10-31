@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bootnode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clique-testnet
+      component: bootnode
+  template:
+    metadata:
+      labels:
+        app: clique-testnet
+        component: bootnode
+    spec:
+      containers:
+      - name: bootnode
+        image: f221267155/clique-testnet:v3
+        command: 
+        - "/bin/bash" 
+        - -c
+        - |
+          bootnode --nodekey=bootnode/boot.key
+        imagePullPolicy: Never
+        ports: 
+        - containerPort: 30303
+          name: discovery-tcp
+          protocol: TCP
+        - containerPort: 30303
+          name: discovery-udp
+          protocol: UDP
+        - containerPort: 30301
+          name: bootnode-udp
+          protocol: UDP
+      #   volumeMounts:
+      #   - name: clique-testnet-disk
+      #     mountPath: /genesis/data/geth
+      # restartPolicy: Always
+      # volumes:
+      #  - name: clique-testnet-disk
+      #    persistentVolumeClaim:
+      #      claimName: clique-testnet-disk
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bootnode
+spec:
+  selector:
+    component: bootnode
+  ports:
+    - port: 30303
+      targetPort: 30303
+      name: discovery-tcp
+      protocol: TCP
+    - port: 30303
+      targetPort: 30303
+      name: discovery-udp
+      protocol: UDP
+    - port: 30301
+      targetPort: 30301
+      name: bootnode-udp
+      protocol: UDP

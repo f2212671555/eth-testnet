@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clique-testnet-miner1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clique-testnet
+      component: miner
+  template:
+    metadata:
+      labels:
+        app: clique-testnet
+        component: miner
+    spec:
+      containers:
+      - name: clique-testnet-miner1
+        image: f221267155/clique-testnet:v3
+        command: 
+        - "/bin/bash"
+        args: 
+        - -c
+        - >
+          geth --mine --syncmode "full"
+          --port 3000 --networkid 49021 
+          --nodiscover
+          --bootnodes enode://5ee0aad9368b87fe841505a69fae6d12c856591c333153729bec30553e87069e71e1092257343da075551cb9d4a0380d5d5a6469deb3d7f098014b2d97ef7707@$(BOOTNODE_SERVICE_HOST):30301
+          --datadir miner1/data
+          --unlock '0x7985806b167e4de16fc60e969770ab209e7df996' 
+          --password miner1/data/password.txt 
+          --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain '*' 
+          --http.api 'admin,eth,net,web3,personal,miner,clique'
+          --nousb --allow-insecure-unlock
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8545
+          name: clique-testnet
+          protocol: TCP
+      #   volumeMounts:
+      #   - name: clique-testnet-disk
+      #     mountPath: /miner1/data/geth
+      # restartPolicy: Always
+      # volumes:
+      #  - name: clique-testnet-disk
+      #    persistentVolumeClaim:
+      #      claimName: clique-testnet-disk
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clique-testnet-miner2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clique-testnet
+      component: miner
+  template:
+    metadata:
+      labels:
+        app: clique-testnet
+        component: miner
+    spec:
+      containers:
+      - name: clique-testnet-miner
+        image: f221267155/clique-testnet:v3
+        command: ["/bin/sh"]
+        args: 
+        - "-c"
+        - >
+          geth --mine --syncmode 'full' 
+          --port 3000 --networkid 49021 
+          --nodiscover
+          --bootnodes enode://5ee0aad9368b87fe841505a69fae6d12c856591c333153729bec30553e87069e71e1092257343da075551cb9d4a0380d5d5a6469deb3d7f098014b2d97ef7707@$(BOOTNODE_SERVICE_HOST):30301
+          --datadir=miner2/data 
+          --unlock '0x3188501e7b51bdd2067e517621df5d41cd584b81' 
+          --password miner2/data/password.txt 
+          --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain '*' 
+          --http.api 'admin,eth,net,web3,personal,miner,clique'
+          --nousb --allow-insecure-unlock
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8545
+          name: clique-testnet
+          protocol: TCP
+#         volumeMounts:
+#         - name: clique-testnet-disk
+#           mountPath: /miner2/data
+      restartPolicy: Always
+#       volumes:
+#        - name: clique-testnet-disk
+#          persistentVolumeClaim:
+#            claimName: clique-testnet-disk
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: clique-testnet-miner3
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: clique-testnet
+#       component: miner
+#   template:
+#     metadata:
+#       labels:
+#         app: clique-testnet
+#         component: miner
+#     spec:
+#       containers:
+#       - name: clique-testnet-miner
+#         image: f221267155/clique-testnet:v3
+#         command: ["/bin/sh"]
+#         args: 
+#         - "-c"
+#         - >
+#           geth --syncmode 'full' 
+#           --port 3000 --networkid 49021 
+#           --nodiscover
+#           --bootnodes enode://5ee0aad9368b87fe841505a69fae6d12c856591c333153729bec30553e87069e71e1092257343da075551cb9d4a0380d5d5a6469deb3d7f098014b2d97ef7707@$(BOOTNODE_SERVICE_HOST):30301
+#           --datadir=miner3/data 
+#           --unlock '0xcd99bbc5f56287b7394572f1925e7a96c86c0220' 
+#           --password miner3/data/password.txt 
+#           --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain '*' 
+#           --http.api 'admin,eth,net,web3,personal,miner,clique' 
+#           --nousb --allow-insecure-unlock
+#         imagePullPolicy: Never
+#         ports:
+#         - containerPort: 8545
+#           name: clique-testnet
+#           protocol: TCP
+#         volumeMounts:
+#         - name: clique-testnet-disk
+#           mountPath: /miner3/data
+#       restartPolicy: Always
+#       volumes:
+#        - name: clique-testnet-disk
+#          persistentVolumeClaim:
+#            claimName: clique-testnet-disk
