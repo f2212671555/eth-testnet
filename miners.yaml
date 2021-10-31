@@ -116,7 +116,7 @@ spec:
         args: 
         - "-c"
         - >
-          geth --syncmode 'full' 
+          geth --mine --syncmode 'full' 
           --port 3000 --networkid 49021 
           --nodiscover
           --bootnodes enode://5ee0aad9368b87fe841505a69fae6d12c856591c333153729bec30553e87069e71e1092257343da075551cb9d4a0380d5d5a6469deb3d7f098014b2d97ef7707@$(BOOTNODE_SERVICE_HOST):30301
